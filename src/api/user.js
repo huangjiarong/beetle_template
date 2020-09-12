@@ -22,3 +22,10 @@ export function logout() {
     method: 'post'
   })
 }
+
+export function getAccountCate() {
+  return request({
+    url: '/vue-admin-template/user/accountCate',
+    method: 'get'
+  })
+}

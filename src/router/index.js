@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import userRouter from './modules/user'
 
 Vue.use(Router)
 
@@ -63,9 +64,10 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: '首页', icon: 'dashboard' }
     }]
   },
+  userRouter,
 
   {
     path: '/example',

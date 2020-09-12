@@ -80,5 +80,37 @@ module.exports = [
         data: 'success'
       }
     }
+  },
+
+  // 获取账号类别
+  {
+    url: '/vue-admin-template/user/accountCate',
+    type: 'get',
+    response: _ => {
+      return {
+        code: 20000,
+        data: [{
+          label: '所有账号'
+        }, {
+          label: '学生',
+          children: [{
+            label: '高一'
+          }, {
+            label: '高二'
+          }, {
+            label: '高三'
+          }]
+        }, {
+          label: '教师',
+          children: [{
+            label: '高一'
+          }, {
+            label: '高二'
+          }, {
+            label: '高三'
+          }]
+        }]
+      }
+    }
   }
 ]

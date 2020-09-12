@@ -2,7 +2,7 @@
 
 import Layout from '@/layout'
 
-const UserRouter = {
+const userRouter = {
   path: '/user',
   component: Layout,
   redirect: '/user/user',
@@ -13,17 +13,23 @@ const UserRouter = {
   },
   children: [
     {
-      path: 'user',
-      component: () => import('@/views/users/index'),
-      name: '帐号管理',
-      meta: { title: '分类' }
+      name: 'account',
+      path: 'account',
+      component: () => import('@/views/user/account'),
+      meta: { title: '账号管理' }
     },
     {
-      path: 'goods',
-      component: () => import('@/views/goods/goods'),
-      name: '商品',
-      meta: { title: '商品' }
+      name: 'student',
+      path: 'student',
+      component: () => import('@/views/user/student'),
+      meta: { title: '学生管理' }
+    },
+    {
+      name: 'teacher',
+      path: 'teacher',
+      component: () => import('@/views/user/teacher'),
+      meta: { title: '教师管理' }
     }
   ]
 }
-export default GoodsRouter
+export default userRouter
