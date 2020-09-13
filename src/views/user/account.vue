@@ -98,114 +98,84 @@
           fit
           highlight-current-row
           style="width: 100%;"
-          @sort-change="sortChange"
         >
-          <el-table-column label="ID" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
+          <el-table-column label="账号">
             <template slot-scope="{row}">
-              <span>{{ row.id }}</span>
+              <span>{{ row.username }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="username" min-width="150px">
+          <el-table-column label="姓名">
             <template slot-scope="{row}">
-              <span class="link-type" @click="handleUpdate(row)">{{ row.title }}</span>
+              <span>{{ row.realname }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="Author" width="110px" align="center">
+          <el-table-column label="角色">
             <template slot-scope="{row}">
-              <span>{{ row.author }}</span>
+              <span>{{ row.roles }}</span>
             </template>
           </el-table-column>
-          <el-table-column v-if="showReviewer" label="Reviewer" width="110px" align="center">
+          <el-table-column label="联系方式">
             <template slot-scope="{row}">
-              <span style="color:red;">{{ row.reviewer }}</span>
+              <span>{{ row.telephone }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="Imp" width="80px">
+          <el-table-column label="账号状态">
             <template slot-scope="{row}">
-              <svg-icon v-for="n in + row.importance" :key="n" icon-class="star" class="meta-item__icon" />
+              <span>{{ row.status }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="Readings" align="center" width="95">
+          <el-table-column label="创建时间">
             <template slot-scope="{row}">
-              <span v-if="row.pageviews" class="link-type" @click="handleFetchPv(row.pageviews)">{{ row.pageviews }}</span>
-              <span v-else>0</span>
+              <span>{{ row.create_time }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="Status" class-name="status-col" width="100">
-            <template slot-scope="{row}">
-              <el-tag :type="row.status | statusFilter">
-                {{ row.status }}
-              </el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
-            <template slot-scope="{row,$index}">
-              <el-button type="primary" size="mini" @click="handleUpdate(row)">
-                Edit
-              </el-button>
-              <el-button v-if="row.status!='published'" size="mini" type="success" @click="handleModifyStatus(row,'published')">
-                Publish
-              </el-button>
-              <el-button v-if="row.status!='draft'" size="mini" @click="handleModifyStatus(row,'draft')">
-                Draft
-              </el-button>
-              <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">
-                Delete
-              </el-button>
+          <el-table-column label="操作" min-width="150px">
+            <template slot-scope="scope">
+              <el-button
+                type="text"
+                size="mini"
+                icon="el-icon-edit"
+                @click.native="editItem(scope.row)"
+              > 修改 </el-button>
+              <el-button
+                type="text"
+                size="mini"
+                icon="el-icon-delete"
+                @click.native="removeItem(scope.row)"
+              > 删除 </el-button>
+              <el-button
+                type="text"
+                size="mini"
+                icon="el-icon-s-operation"
+                @click.native="openRoleItem(scope.row)"
+              >角色分配</el-button>
             </template>
           </el-table-column>
         </el-table>
-
         <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
-
       </el-col>
-
     </el-row>
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="Type" prop="type">
-          <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="Date" prop="timestamp">
-          <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
-        </el-form-item>
-        <el-form-item label="Title" prop="title">
-          <el-input v-model="temp.title" />
-        </el-form-item>
-        <el-form-item label="Status">
-          <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="Imp">
-          <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
-        </el-form-item>
-        <el-form-item label="Remark">
-          <el-input v-model="temp.remark" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="Please input" />
+    <!-- <el-dialog title="角色分配" :visible.sync="roleDialog.visible" width="25%">
+      <el-form>
+        <el-row>
+          <el-col :span="12">
+            <el-tree
+              ref="roleTree"
+              :data="roleDialog.roles"
+              show-checkbox
+              node-key="id"
+              :default-checked-keys="roleDialog.checkedRoleKeys"
+              :props="roleDialog.defaultProps"
+            />
+          </el-col>
+        </el-row>
+        <el-form-item>
+          <el-button type="primary" @click="setRole">{{ $t('button.submit') }}</el-button>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">
-          Cancel
-        </el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
-          Confirm
-        </el-button>
-      </div>
-    </el-dialog>
+    </el-dialog> -->
 
-    <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
-      <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
-        <el-table-column prop="key" label="Channel" />
-        <el-table-column prop="pv" label="Pv" />
-      </el-table>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 

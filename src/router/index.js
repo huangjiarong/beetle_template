@@ -31,6 +31,7 @@ import Layout from '@/layout'
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
+// component里的路径, 如果有分.vue文件和.js文件的话, 在路径里要写明后缀
 export const constantRoutes = [
   // 此处重定向, 是为了配合 点击左侧相同路由后重定向刷新 的功能
   {

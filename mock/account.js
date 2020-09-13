@@ -1,19 +1,28 @@
-const account = [
-  {
-    'id': 1,
-    'username': 'admin',
-    'realname': '小红',
-    'role': '系统管理员',
-    'state': '启用'
-  },
-  {
-    'id': 2,
-    'username': '20154123213',
-    'realname': '小明',
-    'role': '学生',
-    'state': '启用'
-  }
-]
+const account = {
+  'total': 2,
+  'items': [
+    {
+      'id': 1,
+      'username': 'admin',
+      'realname': '小红',
+      'roles': '系统管理员, 老师',
+      'roles_id': [1, 2],
+      'telephone': '13653625721',
+      'create_time': '2020-01-01',
+      'status': '冻结'
+    },
+    {
+      'id': 2,
+      'username': '20154123213',
+      'realname': '小明',
+      'roles': '学生',
+      'roles_id': [3],
+      'telephone': '13645274731',
+      'create_time': '2020-01-01',
+      'status': '启用'
+    }
+  ]
+}
 
 module.exports = [
   // 获取账号类别

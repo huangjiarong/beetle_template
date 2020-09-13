@@ -7,9 +7,10 @@ export function getAccountCate() {
   })
 }
 
-export function getAccount() {
+export function getAccount(query) {
   return request({
     url: '/vue-admin-template/user/account',
-    method: 'get'
+    method: 'get',
+    params: query
   })
 }

@@ -5,7 +5,7 @@ import Layout from '@/layout'
 const userRouter = {
   path: '/user',
   component: Layout,
-  redirect: '/user/user',
+  redirect: '/user/account',
   name: 'User',
   meta: {
     title: '用户管理',
@@ -13,10 +13,16 @@ const userRouter = {
   },
   children: [
     {
-      name: 'account',
+      name: 'Account',
       path: 'account',
-      component: () => import('@/views/user/account'),
+      component: () => import('@/views/user/account.vue'),
       meta: { title: '账号管理' }
+    },
+    {
+      name: 'Role',
+      path: 'role',
+      component: () => import('@/views/user/role.vue'),
+      meta: { title: '角色管理' }
     },
     {
       name: 'student',
