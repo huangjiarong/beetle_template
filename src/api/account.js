@@ -9,8 +9,19 @@ export function getAccountCate() {
 
 export function getAccount(query) {
   return request({
-    url: '/vue-admin-template/user/account',
+    url: '/api/account/',
     method: 'get',
     params: query
+  })
+}
+
+export function createAccount(data) {
+  return request({
+    url: '/api/account/',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    data: data
   })
 }

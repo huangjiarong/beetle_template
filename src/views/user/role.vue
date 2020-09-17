@@ -13,14 +13,9 @@
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column align="header-center" label="描述">
-        <template slot-scope="scope">
-          {{ scope.row.desc }}
-        </template>
-      </el-table-column>
       <el-table-column align="center" label="操作">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="handleEdit(scope)">编辑</el-button>
+          <el-button type="primary" size="small" @click="handleEdit(scope)">编辑权限</el-button>
           <el-button type="danger" size="small" @click="handleDelete(scope)">删除</el-button>
         </template>
       </el-table-column>
@@ -34,29 +29,21 @@
         <el-form-item label="角色编码">
           <el-input v-model="role.codename" placeholder="角色编码(可使用角色名的英文单词)" />
         </el-form-item>
-        <el-form-item label="Desc">
-          <el-input
-            v-model="role.description"
-            :autosize="{ minRows: 2, maxRows: 4}"
-            type="textarea"
-            placeholder="角色描述"
-          />
-        </el-form-item>
-        <!-- <el-form-item label="Menus">
+        <el-form-item label="Menus">
           <el-tree
             ref="tree"
             :check-strictly="checkStrictly"
-            :data="routesData"
+            :data="permissionTree"
             :props="defaultProps"
             show-checkbox
-            node-key="path"
+            node-key="id"
             class="permission-tree"
           />
-        </el-form-item> -->
+        </el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogVisible=false">Cancel</el-button>
-        <el-button type="primary" @click="confirmRole">Confirm</el-button>
+        <!-- <el-button type="primary" @click="confirmRole">Confirm</el-button> -->
       </div>
     </el-dialog>
   </div>

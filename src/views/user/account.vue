@@ -10,14 +10,6 @@
           <el-input v-model="listQuery.name" size="mini" placeholder="请输入姓名" />
         </el-col>
         <el-col :span="4">
-          <dict-select
-            v-model="listQuery.sex"
-            dict-name="性别"
-            placeholder="请选择性别"
-          />
-        </el-col>
-
-        <el-col :span="4">
           <el-input v-model="listQuery.phone" size="mini" placeholder="请输入手机号" />
         </el-col>
         <el-col :span="4">
@@ -53,9 +45,9 @@
             type="success"
             size="mini"
             icon="el-icon-plus"
-            @click.native="add"
+            @click.native="showCreateDialog"
           >添加</el-button>
-          <el-button
+          <!-- <el-button
             type="primary"
             size="mini"
             icon="el-icon-edit"
@@ -66,13 +58,7 @@
             size="mini"
             icon="el-icon-delete"
             @click.native="remove"
-          >删除</el-button>
-          <el-button
-            type="info"
-            size="mini"
-            icon="el-icon-s-operation"
-            @click.native="openRole"
-          >角色分配</el-button>
+          >删除</el-button> -->
         </el-col>
       </el-row>
     </div>
@@ -83,7 +69,7 @@
           empty-text="暂无数据"
           :expand-on-click-node="false"
           :default-expand-all="true"
-          :data="accountCate"
+          :data="roleTree"
           :props="defaultProps"
           class="input-tree"
           @node-click="handleNodeClick"
@@ -114,7 +100,7 @@
               <span>{{ row.roles }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="联系方式">
+          <el-table-column label="手机号">
             <template slot-scope="{row}">
               <span>{{ row.telephone }}</span>
             </template>
@@ -135,7 +121,7 @@
                 type="text"
                 size="mini"
                 icon="el-icon-edit"
-                @click.native="editItem(scope.row)"
+                @click.native="showUpdateDialog(scope.row)"
               > 修改 </el-button>
               <el-button
                 type="text"
@@ -147,7 +133,7 @@
                 type="text"
                 size="mini"
                 icon="el-icon-s-operation"
-                @click.native="openRoleItem(scope.row)"
+                @click.native="openRole(scope)"
               >角色分配</el-button>
             </template>
           </el-table-column>
@@ -156,25 +142,77 @@
       </el-col>
     </el-row>
 
-    <!-- <el-dialog title="角色分配" :visible.sync="roleDialog.visible" width="25%">
+    <el-dialog
+      :title="textMap[accountDialogStatus]"
+      :visible.sync="dialogFormVisible"
+      width="70%"
+    >
+      <el-form ref="form" :model="temp" :rules="rules" label-width="120px" label-position="right">
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="账号" prop="username">
+              <el-input v-model="temp.username" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="姓名" prop="realname">
+              <el-input v-model="temp.realname" />
+            </el-form-item>
+          </el-col>
+          <el-col v-show="accountDialogStatus=='create'" :span="12">
+            <el-form-item label="密码" prop="password">
+              <el-input v-model="temp.password" type="password" /></el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="邮箱" prop="email">
+              <el-input v-model="temp.email" />
+            </el-form-item>
+          </el-col>
+          <el-col v-show="accountDialogStatus=='create'" :span="12">
+            <el-form-item label="再次确认密码" prop="rePassword">
+              <el-input v-model="temp.rePassword" type="password" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="手机号码" prop="telephone">
+              <el-input v-model="temp.telephone" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="是否启用" prop="is_active">
+              <el-switch v-model="temp.is_active" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="accountDialogStatus==='create'?createData():updateData()">
+          确定
+        </el-button>
+        <el-button @click.native="dialogFormVisible = false">
+          取消
+        </el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog title="角色分配" :visible.sync="roleDialog.visible" width="25%">
       <el-form>
         <el-row>
           <el-col :span="12">
             <el-tree
               ref="roleTree"
-              :data="roleDialog.roles"
+              :data="roleTree"
               show-checkbox
               node-key="id"
-              :default-checked-keys="roleDialog.checkedRoleKeys"
-              :props="roleDialog.defaultProps"
+              :props="defaultProps"
             />
           </el-col>
         </el-row>
         <el-form-item>
-          <el-button type="primary" @click="setRole">{{ $t('button.submit') }}</el-button>
+          <!-- <el-button type="primary" @click="setRole">保存</el-button> -->
         </el-form-item>
       </el-form>
-    </el-dialog> -->
+    </el-dialog>
 
   </div>
 </template>

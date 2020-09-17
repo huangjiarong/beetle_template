@@ -9,6 +9,7 @@ const userRouter = {
   name: 'User',
   meta: {
     title: '用户管理',
+    roles: ['user_manage'],
     icon: 'table'
   },
   children: [
@@ -22,19 +23,7 @@ const userRouter = {
       name: 'Role',
       path: 'role',
       component: () => import('@/views/user/role.vue'),
-      meta: { title: '角色管理' }
-    },
-    {
-      name: 'student',
-      path: 'student',
-      component: () => import('@/views/user/student'),
-      meta: { title: '学生管理' }
-    },
-    {
-      name: 'teacher',
-      path: 'teacher',
-      component: () => import('@/views/user/teacher'),
-      meta: { title: '教师管理' }
+      meta: { title: '角色管理', roles: ['role_manage'] }
     }
   ]
 }
