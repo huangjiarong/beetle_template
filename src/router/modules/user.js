@@ -3,27 +3,33 @@
 import Layout from '@/layout'
 
 const userRouter = {
-  path: '/user',
+  path: '/system',
   component: Layout,
-  redirect: '/user/account',
-  name: 'User',
+  redirect: '/system/account',
+  name: 'System',
   meta: {
-    title: '用户管理',
-    roles: ['user_manage'],
+    title: '系统管理',
+    roles: ['system_manage'],
     icon: 'table'
   },
   children: [
     {
       name: 'Account',
       path: 'account',
-      component: () => import('@/views/user/account.vue'),
-      meta: { title: '账号管理' }
+      component: () => import('@/views/system/account/account.vue'),
+      meta: {
+        title: '账号管理',
+        roles: ['account_manage']
+      }
     },
     {
       name: 'Role',
       path: 'role',
-      component: () => import('@/views/user/role.vue'),
-      meta: { title: '角色管理', roles: ['role_manage'] }
+      component: () => import('@/views/system/role/role.vue'),
+      meta: {
+        title: '角色管理',
+        roles: ['role_manage']
+      }
     }
   ]
 }
