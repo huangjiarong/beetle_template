@@ -48,3 +48,14 @@ export function setRoles(id, roles) {
   })
 }
 
+export function uploadExcel(form) {
+  return request({
+    url: '/api/account/upload_excel/',
+    method: 'post',
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    },
+    data: form
+  })
+}
+

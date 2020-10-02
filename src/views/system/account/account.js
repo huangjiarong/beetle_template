@@ -1,4 +1,4 @@
-import { getAccount, createAccount, updateAccount, deleteAccount, setRoles } from '@/api/account'
+import { getAccount, createAccount, updateAccount, deleteAccount, setRoles, uploadExcel } from '@/api/account'
 import { getAllRole } from '@/api/role'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // 权限判断指令
@@ -92,6 +92,8 @@ export default {
         update: '编辑账号',
         create: '添加账号'
       },
+      fileList: [],
+      ExportVisible: false,
       createDialogRules: {
         username: [
           { required: true, message: '请输入登录账号', trigger: 'blur' },
@@ -305,6 +307,46 @@ export default {
       return jsonData.map(v => filterVal.map(j => {
         return v[j]
       }))
+    },
+
+    // 点击导入Excel事件
+    showExportDialog() {
+      this.ExportVisible = true
+    },
+    // 上传文件之前的钩子
+    beforeUpload(file) {
+      const type = file.name.split('.')[1]
+      if (type !== 'xlsx' && type !== 'xls') {
+        this.$message.error('请上传后缀名为 .xlsx 或 .xls 的excel文件')
+        return false
+      }
+      // 限制文件上传大小, 大于1M则提示, 且不请求提交表单
+      const isLt1M = file.size / 1024 / 1024 < 1
+      if (!isLt1M) {
+        this.$message.error('上传文件大小不能超过1M')
+        return false
+      }
+    },
+    // 上传文件数量超出自定义数量
+    handleExceed(files, fileList) {
+      this.$message.warning('当前限制选择 1 个文件, 请删除后继续上传')
+    },
+    // 点击上传事件
+    submitUpload() {
+      this.$refs.upload.submit()
+    },
+    uploadFile(item) {
+      const file = item.file
+      const form = new FormData()
+      form.append('upload', file)
+      uploadExcel(form).then(response => {
+        this.$notify({
+          title: '上传文件成功',
+          message: '上传文件成功',
+          type: 'success',
+          duration: 2000
+        })
+      })
     }
   }
 }

@@ -49,6 +49,7 @@
 
 <script>
 // import { validUsername } from '@/utils/validate'
+import { Message } from 'element-ui'
 
 export default {
   name: 'Login',
@@ -93,7 +94,12 @@ export default {
           this.$store.dispatch('user/login', this.loginForm).then(() => {
             this.$router.push({ path: this.redirect || '/' })
             this.loading = false
-          }).catch(() => {
+          }).catch((error) => {
+            Message({
+              message: error.response.data.message,
+              type: 'error',
+              duration: 5 * 1000
+            })
             this.loading = false
           })
         } else {

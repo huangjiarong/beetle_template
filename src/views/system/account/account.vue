@@ -68,6 +68,7 @@
             type="primary"
             size="small"
             icon="el-icon-document"
+            @click.native="showExportDialog"
           >导入Excel</el-button>
         </el-col>
       </el-row>
@@ -215,6 +216,37 @@
           确定
         </el-button>
         <el-button @click.native="roleDialog.visible = false">
+          取消
+        </el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog title="上传Excel" :visible.sync="ExportVisible" width="25%">
+      <div style="margin-bottom: 20px;">
+        <el-button type="primary"> 下载Excel模版 </el-button>
+      </div>
+      <el-upload
+        ref="upload"
+        class="upload-demo"
+        drag
+        :multiple="false"
+        :limit="1"
+        action=""
+        :before-upload="beforeUpload"
+        :on-exceed="handleExceed"
+        :file-list="fileList"
+        :http-request="uploadFile"
+        :auto-upload="false"
+      >
+        <i class="el-icon-upload" />
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div slot="tip" class="el-upload__tip">只能上传excel文件，且不超过1m</div>
+      </el-upload>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click.native="submitUpload">
+          上传
+        </el-button>
+        <el-button @click.native="ExportVisible = false">
           取消
         </el-button>
       </div>

@@ -67,6 +67,22 @@ export const constantRoutes = [
       component: () => import('@/views/dashboard/index'),
       meta: { title: '首页', icon: 'dashboard' }
     }]
+  },
+  {
+    path: '/table_demo',
+    component: Layout,
+    redirect: '/table_demo',
+    children: [{
+      path: 'table_demo',
+      name: 'table_demo',
+      component: () => import('@/views/table_demo/table_demo.vue'),
+      meta: { title: '表格Demo', icon: 'dashboard' }
+    }]
+  },
+  {
+    path: '/download_pdf',
+    component: () => import('@/views/table_demo/download_pdf.vue'),
+    hidden: true
   }
 ]
 
